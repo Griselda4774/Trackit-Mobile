@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:trackit_mobile__frontend/Presentation/UI/Screens/CartPage.dart';
 import 'package:trackit_mobile__frontend/Presentation/UI/Screens/HomePage.dart';
 import 'package:trackit_mobile__frontend/Presentation/UI/Screens/LoginPage.dart';
 import 'package:trackit_mobile__frontend/Presentation/UI/Screens/MainPage.dart';
+import 'package:trackit_mobile__frontend/Presentation/UI/Screens/Profile.dart';
 
 void main() {
   runApp(const MainApp());
@@ -14,11 +16,13 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const MainPage(),
+      home: LoginPage(),
       routes: {
-        '/loginpage':(context) => const LoginPage(),
-        '/homepage':(context) => const HomePage(),
-        '/mainpage':(context) => const MainPage()
+        '/loginpage': (context) => LoginPage(),
+        '/homepage': (context) => HomePage(),
+        '/mainpage': (context) => MainPage(),
+        '/cartpage': (context) => CartPage(),
+        '/profilepage': (context) => ProfilePage(),
       },
     );
   }
