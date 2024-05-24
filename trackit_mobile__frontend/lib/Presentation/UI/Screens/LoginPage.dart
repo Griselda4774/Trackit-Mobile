@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:trackit_mobile__frontend/Presentation/Bloc/LoginBloc/LoginBloc.dart';
 import 'package:trackit_mobile__frontend/Presentation/UI/Screens/MainPage.dart';
 import 'package:trackit_mobile__frontend/Presentation/UI/Widgets/ButtonWidget.dart';
 import 'package:trackit_mobile__frontend/Presentation/UI/Widgets/TextFieldWidget.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
-
   @override
   State<LoginPage> createState() => _LogInPageState();
 }
 
 class _LogInPageState extends State<LoginPage> {
+  LoginBloc bloc = LoginBloc();
+
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -48,10 +50,16 @@ class _LogInPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: Container(
-                      child: TextFieldWidget(
-                        hinttext: "Email",
-                        type: false,
-                        controller: _emailController,
+                      child: StreamBuilder(
+                        stream: bloc.userStream,
+                        builder: (context, snapshot) => TextFieldWidget(
+                          hinttext: "Email",
+                          type: false,
+                          controller: _emailController,
+                          errortext: snapshot.hasError
+                              ? snapshot.error as String
+                              : null,
+                        ),
                       ),
                     ),
                   ),
@@ -60,10 +68,16 @@ class _LogInPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: Container(
-                      child: TextFieldWidget(
-                        hinttext: "Password",
-                        type: true,
-                        controller: _passwordController,
+                      child: StreamBuilder(
+                        stream: bloc.passwordStream,
+                        builder: (context, snapshot) => TextFieldWidget(
+                          hinttext: "Password",
+                          type: true,
+                          controller: _passwordController,
+                          errortext: snapshot.hasError
+                              ? snapshot.error as String
+                              : null,
+                        ),
                       ),
                     ),
                   ),
@@ -75,11 +89,7 @@ class _LogInPageState extends State<LoginPage> {
                       child: ButtonWidget(
                           text: "Login",
                           ontap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const MainPage(),
-                              ),
-                            );
+                            onLoginClicked();
                           }),
                     ),
                   ),
@@ -106,5 +116,12 @@ class _LogInPageState extends State<LoginPage> {
             ),
           ),
         ));
+  }
+
+  void onLoginClicked() {
+    if (bloc.isValidInfo(_emailController.text, _passwordController.text)) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => MainPage()));
+    }
   }
 }

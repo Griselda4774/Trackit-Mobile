@@ -6,11 +6,13 @@ class TextFieldWidget extends StatelessWidget {
   final TextEditingController? controller;
   final String hinttext;
   final bool type;
+  final String? errortext;
   const TextFieldWidget(
       {Key? key,
       required this.hinttext,
       required this.type,
-      required this.controller})
+      required this.controller,
+      required this.errortext})
       : super(key: key);
 
   @override
@@ -24,9 +26,9 @@ class TextFieldWidget extends StatelessWidget {
         padding: EdgeInsets.only(left: 20),
         child: TextField(
           decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: hinttext,
-          ),
+              border: InputBorder.none,
+              hintText: hinttext,
+              errorText: errortext),
           obscureText: type,
           controller: controller,
         ),
